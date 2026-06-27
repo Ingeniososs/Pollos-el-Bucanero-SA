@@ -1,0 +1,65 @@
+# ===============================
+# SISTEMA INTEGRADO POLLOS BUCANERO
+# Informática I
+# ===============================
+
+# --------- ESTRUCTURAS DE DATOS ---------
+
+clientes = []
+
+proveedores = []
+
+inventario = []
+
+facturas = []
+
+ordenes = []
+
+# --------- CLIENTES ---------
+
+def registrar_cliente():
+    pass
+
+
+def eliminar_cliente():
+    pass
+
+
+# --------- PROVEEDORES ---------
+
+def registrar_proveedor():
+    pass
+
+
+def eliminar_proveedor():
+    pass
+
+
+# --------- INVENTARIO ---------
+
+def registrar_inventario():
+    pass
+
+
+# --------- VENTAS ---------
+
+def registrar_venta():
+    pass
+
+
+def generar_factura_txt():
+    pass
+
+
+# --------- COMPRAS ---------
+
+def registrar_compra():
+    pass
+
+
+def generar_orden_txt():
+    pass
+
+
+def actualizar_estado():
+    pass

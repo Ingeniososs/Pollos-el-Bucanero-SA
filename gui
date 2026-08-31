@@ -1,1 +1,1282 @@
+# ==========================================
+# Sistema Integrado Pollos El Bucanero S.A.
+# Interfaz Gráfica (GUI)
+# ==========================================
+
+from tkinter import *
+from tkinter import messagebox
+from tkinter.ttk import Combobox
+from logica import generar_factura_txt
+
+from logica import *
+
+
+# ==========================================
+# VENTANA REGISTRAR CLIENTE
+# ==========================================
+
+def ventana_clientes():
+
+    ventana = Toplevel()
+
+    ventana.title("Registrar Cliente")
+
+    ventana.geometry("500x600")
+
+    ventana.resizable(False,False)
+
+    Label(
+        ventana,
+        text="REGISTRO DE CLIENTES",
+        font=("Arial",16,"bold")
+    ).pack(pady=10)
+
+
+    Label(ventana,text="Tipo Documento").pack()
+    entrada_tipo=Entry(ventana,width=35)
+    entrada_tipo.pack()
+
+
+    Label(ventana,text="Número Documento").pack()
+    entrada_documento=Entry(ventana,width=35)
+    entrada_documento.pack()
+
+
+    Label(ventana,text="Nombre").pack()
+    entrada_nombre=Entry(ventana,width=35)
+    entrada_nombre.pack()
+
+
+    Label(ventana,text="Autoriza Habeas Data").pack()
+    entrada_habeas=Entry(ventana,width=35)
+    entrada_habeas.pack()
+
+
+    Label(ventana,text="Ciudad").pack()
+    entrada_ciudad=Entry(ventana,width=35)
+    entrada_ciudad.pack()
+
+
+    Label(ventana,text="Dirección Operativa").pack()
+    entrada_operativa=Entry(ventana,width=35)
+    entrada_operativa.pack()
+
+
+    Label(ventana,text="Dirección Residencia").pack()
+    entrada_residencia=Entry(ventana,width=35)
+    entrada_residencia.pack()
+
+
+    Label(ventana,text="Teléfono").pack()
+    entrada_telefono=Entry(ventana,width=35)
+    entrada_telefono.pack()
+
+
+    Label(ventana,text="Correo").pack()
+    entrada_correo=Entry(ventana,width=35)
+    entrada_correo.pack()
+
+
+    Label(ventana,text="Representante Legal").pack()
+    entrada_representante=Entry(ventana,width=35)
+    entrada_representante.pack()
+
+
+    Label(ventana,text="Régimen Tributario").pack()
+    entrada_regimen=Entry(ventana,width=35)
+    entrada_regimen.pack()
+
+
+    def guardar():
+
+        cliente=[
+
+            entrada_tipo.get(),
+
+            entrada_documento.get(),
+
+            entrada_nombre.get(),
+
+            entrada_habeas.get(),
+
+            entrada_ciudad.get(),
+
+            entrada_operativa.get(),
+
+            entrada_residencia.get(),
+
+            entrada_telefono.get(),
+
+            entrada_correo.get(),
+
+            entrada_representante.get(),
+
+            entrada_regimen.get()
+
+        ]
+
+        registrar_cliente(cliente)
+
+        messagebox.showinfo(
+
+            "Cliente",
+
+            "Cliente registrado correctamente."
+
+        )
+
+        ventana.destroy()
+
+
+    Button(
+
+        ventana,
+
+        text="Guardar",
+
+        width=20,
+
+        command=guardar
+
+    ).pack(pady=15)
+
+# ==========================================
+# VENTANA REGISTRAR PROVEEDOR
+# ==========================================
+
+def ventana_proveedores():
+
+    ventana = Toplevel()
+
+    ventana.title("Registro de Proveedores")
+
+    ventana.geometry("750x500")
+
+    ventana.resizable(False, False)
+
+    Label(
+        ventana,
+        text="REGISTRO DE PROVEEDORES",
+        font=("Arial",16,"bold")
+    ).grid(row=0,column=0,columnspan=4,pady=15)
+
+
+    campos = [
+
+        "Tipo Documento",
+        "Número Documento",
+        "Nombre Proveedor",
+        "Ciudad",
+        "Dirección",
+        "Teléfono",
+        "Correo",
+        "Representante Legal",
+        "Régimen Tributario",
+        "RUT",
+        "Banco",
+        "Tipo Cuenta",
+        "Número Cuenta",
+        "Tipo Proveedor",
+        "Tiempo Entrega (días)",
+        "Contacto Comercial",
+        "Contacto Cartera",
+        "Contacto Logístico",
+        "Condiciones Pago (días)",
+        "Calificación (1-5)"
+
+    ]
+
+
+    entradas = []
+
+
+    fila = 1
+
+    columna = 0
+
+
+    for campo in campos:
+
+        Label(
+            ventana,
+            text=campo
+        ).grid(
+            row=fila,
+            column=columna,
+            padx=10,
+            pady=4,
+            sticky="w"
+        )
+
+        entrada = Entry(
+            ventana,
+            width=25
+        )
+
+        entrada.grid(
+            row=fila,
+            column=columna+1,
+            padx=5,
+            pady=4
+        )
+
+        entradas.append(entrada)
+
+        if columna == 0:
+
+            columna = 2
+
+        else:
+
+            columna = 0
+
+            fila += 1
+
+
+    def guardar():
+
+        proveedor = []
+
+        for entrada in entradas:
+
+            proveedor.append(
+                entrada.get()
+            )
+
+        registrar_proveedor(proveedor)
+
+        messagebox.showinfo(
+
+            "Proveedor",
+
+            "Proveedor registrado correctamente."
+
+        )
+
+        ventana.destroy()
+
+
+    Button(
+
+        ventana,
+
+        text="Guardar",
+
+        width=20,
+
+        command=guardar
+
+    ).grid(
+
+        row=fila+1,
+
+        column=0,
+
+        columnspan=4,
+
+        pady=20
+
+    )
+# ==========================================
+# VENTANA INVENTARIO
+# ==========================================
+
+def ventana_inventario():
+
+    ventana = Toplevel()
+
+    ventana.title("Inventario")
+
+    ventana.geometry("500x800")
+
+    ventana.resizable(False,False)
+
+    Label(
+        ventana,
+        text="REGISTRO DE INVENTARIO",
+        font=("Arial",16,"bold")
+    ).pack(pady=10)
+
+
+    if len(proveedores)==0:
+
+        Label(
+            ventana,
+            text="No hay proveedores registrados."
+        ).pack(pady=20)
+
+        return
+
+
+    Label(
+        ventana,
+        text="Proveedor"
+    ).pack()
+
+    nombres=[]
+
+    for proveedor in proveedores:
+
+        nombres.append(proveedor[2])
+
+    combo_proveedor=Combobox(
+
+        ventana,
+
+        values=nombres,
+
+        state="readonly",
+
+        width=35
+
+    )
+
+    combo_proveedor.pack()
+
+
+    Label(
+        ventana,
+        text="Nombre del Insumo"
+    ).pack()
+
+    entrada_insumo=Entry(
+        ventana,
+        width=38
+    )
+
+    entrada_insumo.pack()
+
+
+    Label(
+        ventana,
+        text="Inventario Actual"
+    ).pack()
+
+    entrada_stock=Entry(
+        ventana,
+        width=38
+    )
+
+    entrada_stock.pack()
+
+
+    Label(
+        ventana,
+        text="Demanda Diaria"
+    ).pack()
+
+    entrada_demanda=Entry(
+        ventana,
+        width=38
+    )
+
+    entrada_demanda.pack()
+
+# ==========================================
+# VENTANA INVENTARIO
+# ==========================================
+
+def ventana_inventario():
+
+    ventana = Toplevel()
+
+    ventana.title("Inventario")
+
+    ventana.geometry("520x500")
+
+    ventana.resizable(False,False)
+
+    Label(
+        ventana,
+        text="REGISTRO DE INVENTARIO",
+        font=("Arial",16,"bold")
+    ).pack(pady=10)
+
+
+    if len(proveedores)==0:
+
+        Label(
+            ventana,
+            text="No hay proveedores registrados."
+        ).pack(pady=20)
+
+        return
+
+
+    Label(
+        ventana,
+        text="Proveedor"
+    ).pack()
+
+    nombres=[]
+
+    for proveedor in proveedores:
+
+        nombres.append(proveedor[2])
+
+    combo_proveedor=Combobox(
+
+        ventana,
+
+        values=nombres,
+
+        state="readonly",
+
+        width=35
+
+    )
+
+    combo_proveedor.pack()
+
+
+    Label(
+        ventana,
+        text="Nombre del Insumo"
+    ).pack()
+
+    entrada_insumo=Entry(
+        ventana,
+        width=38
+    )
+
+    entrada_insumo.pack()
+
+
+    Label(
+        ventana,
+        text="Inventario Actual"
+    ).pack()
+
+    entrada_stock=Entry(
+        ventana,
+        width=38
+    )
+
+    entrada_stock.pack()
+
+
+    Label(
+        ventana,
+        text="Demanda Diaria"
+    ).pack()
+
+    entrada_demanda=Entry(
+        ventana,
+        width=38
+    )
+
+    entrada_demanda.pack()
+
+    def guardar():
+
+        if combo_proveedor.get() == "":
+
+            messagebox.showerror(
+                "Error",
+                "Seleccione un proveedor."
+            )
+            return
+
+        try:
+
+            inventario_actual = int(entrada_stock.get())
+            demanda_diaria = int(entrada_demanda.get())
+
+        except ValueError:
+
+            messagebox.showerror(
+                "Error",
+                "Inventario y demanda deben ser números."
+            )
+            return
+
+        respuesta = registrar_producto(
+
+            combo_proveedor.get(),
+            entrada_insumo.get(),
+            inventario_actual,
+            demanda_diaria
+
+        )
+
+        if respuesta == False:
+
+            messagebox.showerror(
+                "Error",
+                "El proveedor no existe."
+            )
+
+            return
+
+        messagebox.showinfo(
+            "Inventario",
+            "Producto registrado correctamente."
+        )
+
+        combo_proveedor.set("")
+        entrada_insumo.delete(0, END)
+        entrada_stock.delete(0, END)
+        entrada_demanda.delete(0, END)
+
+
+    Button(
+
+        ventana,
+
+        text="Guardar Producto",
+
+        width=25,
+
+        command=guardar
+
+    ).pack(pady=10)
+
+
+    Button(
+
+        ventana,
+
+        text="Consultar Inventario",
+
+        width=25,
+
+        command=ventana_consultar_inventario
+
+    ).pack(pady=10)
+
+    # ==========================================
+# CONSULTAR INVENTARIO
+# ==========================================
+
+def ventana_consultar_inventario():
+
+    ventana=Toplevel()
+
+    ventana.title("Consulta Inventario")
+
+    ventana.geometry("750x450")
+
+    texto=Text(
+
+        ventana,
+
+        width=90,
+
+        height=25
+
+    )
+
+    texto.pack()
+
+    if len(inventario)==0:
+
+        texto.insert(
+
+            END,
+
+            "No hay productos registrados."
+
+        )
+
+        return
+
+
+    for producto in inventario:
+
+        texto.insert(
+
+            END,
+
+            "Proveedor: "+str(producto[0])+"\n"
+
+        )
+
+        texto.insert(
+
+            END,
+
+            "Insumo: "+str(producto[1])+"\n"
+
+        )
+
+        texto.insert(
+
+            END,
+
+            "Inventario: "+str(producto[2])+"\n"
+
+        )
+
+        texto.insert(
+
+            END,
+
+            "Demanda diaria: "+str(producto[3])+"\n"
+
+        )
+
+        texto.insert(
+
+            END,
+
+            "Días de Stock: "+str(round(producto[4],2))+"\n"
+
+        )
+
+        texto.insert(
+
+            END,
+
+            "Estado: "+str(producto[5])+"\n"
+
+        )
+
+        texto.insert(
+
+            END,
+
+            "Acción: "+str(producto[6])+"\n"
+
+        )
+
+        texto.insert(
+
+            END,
+
+            "-----------------------------------------\n\n"
+
+        )
+
+    # ==========================================
+# VENTANA COMPRAS
+# ==========================================
+
+def ventana_compras():
+
+    ventana = Toplevel()
+
+    ventana.title("Compras")
+
+    ventana.geometry("500x450")
+
+    Label(
+        ventana,
+        text="REGISTRO DE COMPRAS",
+        font=("Arial",16,"bold")
+    ).pack(pady=10)
+
+    Label(ventana,text="Código").pack()
+    entrada_codigo=Entry(ventana,width=35)
+    entrada_codigo.pack()
+
+    Label(ventana,text="Producto").pack()
+    entrada_producto=Entry(ventana,width=35)
+    entrada_producto.pack()
+
+    Label(ventana,text="Proveedor").pack()
+
+    nombres=[]
+
+    for proveedor in proveedores:
+
+        nombres.append(proveedor[2])
+
+    combo=Combobox(
+
+        ventana,
+
+        values=nombres,
+
+        state="readonly",
+
+        width=32
+
+    )
+
+    combo.pack()
+
+    Label(ventana,text="Cantidad").pack()
+    entrada_cantidad=Entry(ventana,width=35)
+    entrada_cantidad.pack()
+
+    Label(ventana,text="Precio Unitario").pack()
+    entrada_precio=Entry(ventana,width=35)
+    entrada_precio.pack()
+
+
+    def guardar():
+
+        compra=[
+
+            entrada_codigo.get(),
+
+            entrada_producto.get(),
+
+            combo.get(),
+
+            entrada_cantidad.get(),
+
+            entrada_precio.get()
+
+        ]
+
+        registrar_compra(compra)
+
+        messagebox.showinfo(
+
+            "Compra",
+
+            "Compra registrada correctamente."
+
+        )
+
+        ventana.destroy()
+
+
+    Button(
+
+        ventana,
+
+        text="Guardar Compra",
+
+        width=20,
+
+        command=guardar
+
+    ).pack(pady=20)
+
+# ==========================================
+# VENTANA VENTAS
+# ==========================================
+
+def ventana_ventas():
+
+    ventana = Toplevel()
+
+    ventana.title("Ventas")
+
+    ventana.geometry("500x500")
+
+    Label(
+        ventana,
+        text="REGISTRO DE VENTAS",
+        font=("Arial",16,"bold")
+    ).pack(pady=10)
+
+    Label(ventana,text="Código").pack()
+    entrada_codigo = Entry(ventana,width=35)
+    entrada_codigo.pack()
+
+    Label(ventana,text="Producto").pack()
+    entrada_producto = Entry(ventana,width=35)
+    entrada_producto.pack()
+
+    Label(ventana,text="Cliente").pack()
+
+    nombres = []
+
+    for cliente in clientes:
+        nombres.append(cliente[2])
+
+    combo = Combobox(
+        ventana,
+        values=nombres,
+        state="readonly",
+        width=32
+    )
+
+    combo.pack()
+
+    Label(ventana,text="Cantidad").pack()
+    entrada_cantidad = Entry(ventana,width=35)
+    entrada_cantidad.pack()
+
+    Label(ventana,text="Precio").pack()
+    entrada_precio = Entry(ventana,width=35)
+    entrada_precio.pack()
+
+
+    def guardar():
+
+        venta = [
+
+            entrada_codigo.get(),
+
+            entrada_producto.get(),
+
+            combo.get(),
+
+            entrada_cantidad.get(),
+
+            entrada_precio.get()
+
+        ]
+
+        registrar_venta(venta)
+
+        generar_factura_txt(venta)
+
+        messagebox.showinfo(
+            "Venta",
+            "Venta registrada correctamente.\nFactura generada."
+        )
+
+        ventana.destroy()
+
+
+    Button(
+
+        ventana,
+
+        text="Guardar Venta",
+
+        width=20,
+
+        command=guardar
+
+    ).pack(pady=20)
+
+
+# ==========================================
+# VENTANA ORDENES
+# ==========================================
+
+def ventana_ordenes():
+
+    ventana=Toplevel()
+
+    ventana.title("Órdenes de Pedido")
+
+    ventana.geometry("500x550")
+
+    Label(
+
+        ventana,
+
+        text="ORDEN DE PEDIDO",
+
+        font=("Arial",16,"bold")
+
+    ).pack(pady=10)
+
+
+    Label(ventana,text="Número Orden").pack()
+    entrada_numero=Entry(ventana,width=35)
+    entrada_numero.pack()
+
+
+    Label(ventana,text="Proveedor").pack()
+
+    nombres=[]
+
+    for proveedor in proveedores:
+
+        nombres.append(proveedor[2])
+
+    combo=Combobox(
+
+        ventana,
+
+        values=nombres,
+
+        state="readonly",
+
+        width=32
+
+    )
+
+    combo.pack()
+
+
+    Label(ventana,text="Producto").pack()
+    entrada_producto=Entry(ventana,width=35)
+    entrada_producto.pack()
+
+
+    Label(ventana,text="Cantidad").pack()
+    entrada_cantidad=Entry(ventana,width=35)
+    entrada_cantidad.pack()
+
+
+    Label(ventana,text="Fecha").pack()
+    entrada_fecha=Entry(ventana,width=35)
+    entrada_fecha.pack()
+
+
+    Label(ventana,text="Estado").pack()
+
+    combo_estado=Combobox(
+
+        ventana,
+
+        values=[
+
+            "Pendiente",
+
+            "En Proceso",
+
+            "Entregado"
+
+        ],
+
+        state="readonly",
+
+        width=32
+
+    )
+
+    combo_estado.current(0)
+
+    combo_estado.pack()
+
+
+    def guardar():
+
+        orden=[
+
+            entrada_numero.get(),
+
+            combo.get(),
+
+            entrada_producto.get(),
+
+            entrada_cantidad.get(),
+
+            entrada_fecha.get(),
+
+            combo_estado.get()
+
+        ]
+
+        registrar_orden(
+
+            orden
+
+        )
+
+        generar_orden_txt(
+
+            orden
+
+        )
+
+        messagebox.showinfo(
+
+            "Orden",
+
+            "Orden registrada correctamente."
+
+        )
+
+        ventana.destroy()
+
+
+    Button(
+
+        ventana,
+
+        text="Guardar Orden",
+
+        width=20,
+
+        command=guardar
+
+    ).pack(pady=20)
+
+# ==========================================
+# ELIMINAR CLIENTE
+# ==========================================
+
+def ventana_eliminar_cliente():
+
+    ventana=Toplevel()
+
+    ventana.title("Eliminar Cliente")
+
+    ventana.geometry("350x180")
+
+
+    Label(
+
+        ventana,
+
+        text="Documento"
+
+    ).pack(pady=10)
+
+
+    entrada=Entry(
+
+        ventana,
+
+        width=30
+
+    )
+
+    entrada.pack()
+
+
+    def eliminar():
+
+        respuesta=eliminar_cliente(
+
+            entrada.get()
+
+        )
+
+        if respuesta:
+
+            messagebox.showinfo(
+
+                "Cliente",
+
+                "Cliente eliminado."
+
+            )
+
+        else:
+
+            messagebox.showerror(
+
+                "Error",
+
+                "Cliente no encontrado."
+
+            )
+
+        ventana.destroy()
+
+
+    Button(
+
+        ventana,
+
+        text="Eliminar",
+
+        width=20,
+
+        command=eliminar
+
+    ).pack(pady=20)
+
+# ==========================================
+# ELIMINAR PROVEEDOR
+# ==========================================
+
+def ventana_eliminar_proveedor():
+
+    ventana=Toplevel()
+
+    ventana.title("Eliminar Proveedor")
+
+    ventana.geometry("350x180")
+
+
+    Label(
+
+        ventana,
+
+        text="Documento"
+
+    ).pack(pady=10)
+
+
+    entrada=Entry(
+
+        ventana,
+
+        width=30
+
+    )
+
+    entrada.pack()
+
+
+    def eliminar():
+
+        respuesta=eliminar_proveedor(
+
+            entrada.get()
+
+        )
+
+        if respuesta:
+
+            messagebox.showinfo(
+
+                "Proveedor",
+
+                "Proveedor eliminado."
+
+            )
+
+        else:
+
+            messagebox.showerror(
+
+                "Error",
+
+                "Proveedor no encontrado."
+
+            )
+
+        ventana.destroy()
+
+
+    Button(
+
+        ventana,
+
+        text="Eliminar",
+
+        width=20,
+
+        command=eliminar
+
+    ).pack(pady=20)
+
+# ==========================================
+# VENTANA PRINCIPAL
+# ==========================================
+
+def iniciar_gui():
+
+    ventana = Tk()
+
+    ventana.title("Sistema Integrado Pollos El Bucanero S.A.")
+
+    ventana.geometry("500x600")
+
+    ventana.resizable(False, False)
+
+    Label(
+        ventana,
+        text="POLLOS EL BUCANERO S.A.",
+        font=("Arial",18,"bold")
+    ).pack(pady=15)
+
+    Label(
+        ventana,
+        text="Sistema Integrado de Gestión",
+        font=("Arial",12)
+    ).pack(pady=5)
+
+
+    Button(
+
+        ventana,
+
+        text="Registrar Cliente",
+
+        width=30,
+
+        command=ventana_clientes
+
+    ).pack(pady=5)
+
+
+    Button(
+
+        ventana,
+
+        text="Registrar Proveedor",
+
+        width=30,
+
+        command=ventana_proveedores
+
+    ).pack(pady=5)
+
+
+    Button(
+
+        ventana,
+
+        text="Inventario",
+
+        width=30,
+
+        command=ventana_inventario
+
+    ).pack(pady=5)
+
+
+    Button(
+
+        ventana,
+
+        text="Compras",
+
+        width=30,
+
+        command=ventana_compras
+
+    ).pack(pady=5)
+
+
+    Button(
+
+        ventana,
+
+        text="Ventas",
+
+        width=30,
+
+        command=ventana_ventas
+
+    ).pack(pady=5)
+
+
+    Button(
+
+        ventana,
+
+        text="Órdenes de Pedido",
+
+        width=30,
+
+        command=ventana_ordenes
+
+    ).pack(pady=5)
+
+
+    Button(
+
+        ventana,
+
+        text="Eliminar Cliente",
+
+        width=30,
+
+        command=ventana_eliminar_cliente
+
+    ).pack(pady=5)
+
+
+    Button(
+
+        ventana,
+
+        text="Eliminar Proveedor",
+
+        width=30,
+
+        command=ventana_eliminar_proveedor
+
+    ).pack(pady=5)
+
+
+    Button(
+
+        ventana,
+
+        text="Salir",
+
+        width=30,
+
+        command=ventana.destroy
+
+    ).pack(pady=20)
+
+    ventana.mainloop()
 

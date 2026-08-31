@@ -1,65 +1,426 @@
-# ===============================
-# SISTEMA INTEGRADO POLLOS BUCANERO
+# ==========================================
+# Sistema Integrado Pollos El Bucanero S.A.
+# Lógica del Programa
 # Informática I
-# ===============================
+# ==========================================
 
-# --------- ESTRUCTURAS DE DATOS ---------
+# ==========================================
+# ESTRUCTURAS DE DATOS
+# ==========================================
+import os
+
 
 clientes = []
-
 proveedores = []
-
 inventario = []
-
-facturas = []
-
+compras = []
+ventas = []
 ordenes = []
 
-# --------- CLIENTES ---------
+# ==========================================
+# CLIENTES
+# ==========================================
 
-def registrar_cliente():
-    pass
+def registrar_cliente(cliente):
 
-
-def eliminar_cliente():
-    pass
-
-
-# --------- PROVEEDORES ---------
-
-def registrar_proveedor():
-    pass
+    clientes.append(cliente)
 
 
-def eliminar_proveedor():
-    pass
+def mostrar_clientes():
+
+    return clientes
 
 
-# --------- INVENTARIO ---------
+def eliminar_cliente(documento):
 
-def registrar_inventario():
-    pass
+    for cliente in clientes:
 
+        if cliente[1] == documento:
 
-# --------- VENTAS ---------
+            clientes.remove(cliente)
 
-def registrar_venta():
-    pass
+            return True
 
-
-def generar_factura_txt():
-    pass
+    return False
 
 
-# --------- COMPRAS ---------
+# ==========================================
+# PROVEEDORES
+# ==========================================
 
-def registrar_compra():
-    pass
+def registrar_proveedor(proveedor):
+
+    proveedores.append(proveedor)
 
 
-def generar_orden_txt():
-    pass
+def mostrar_proveedores():
+
+    return proveedores
 
 
-def actualizar_estado():
-    pass
+def eliminar_proveedor(documento):
+
+    for proveedor in proveedores:
+
+        if proveedor[1] == documento:
+
+            proveedores.remove(proveedor)
+
+            return True
+
+    return False
+
+
+# ==========================================
+# INVENTARIO
+# ==========================================
+
+def registrar_producto(
+
+    proveedor,
+
+    insumo,
+
+    inventario_actual,
+
+    demanda_diaria
+
+):
+
+    dias_stock = inventario_actual / demanda_diaria
+
+    if dias_stock < 5:
+
+        estado = "CRITICO"
+
+        accion = "Pedido de Emergencia"
+
+    elif dias_stock <= 15:
+
+        estado = "ALERTA"
+
+        accion = "Realizar Pedido Normal"
+
+    else:
+
+        estado = "SEGURO"
+
+        accion = "Mantener Monitoreo"
+
+    producto = [
+
+        proveedor,
+
+        insumo,
+
+        inventario_actual,
+
+        demanda_diaria,
+
+        dias_stock,
+
+        estado,
+
+        accion
+
+    ]
+
+    inventario.append(producto)
+
+
+def mostrar_inventario():
+
+    return inventario
+
+# ==========================================
+# COMPRAS
+# ==========================================
+
+def registrar_compra(compra):
+
+    compras.append(compra)
+
+
+def mostrar_compras():
+
+    return compras
+
+
+# ==========================================
+# VENTAS
+# ==========================================
+
+def registrar_venta(venta):
+
+    ventas.append(venta)
+
+
+def mostrar_ventas():
+
+    return ventas
+
+
+# ==========================================
+# ÓRDENES DE PEDIDO
+# ==========================================
+
+def registrar_orden(orden):
+
+    ordenes.append(orden)
+
+
+def mostrar_ordenes():
+
+    return ordenes
+
+
+# ==========================================
+# ACTUALIZAR ESTADO DE ÓRDENES
+# ==========================================
+
+def actualizar_estado(numero_orden, nuevo_estado):
+
+    for orden in ordenes:
+
+        if orden[0] == numero_orden:
+
+            orden[5] = nuevo_estado
+
+            return True
+
+    return False
+
+
+# ==========================================
+# GENERAR FACTURA TXT
+# ==========================================
+
+def generar_factura_txt(venta):
+
+    archivo = open("Factura.txt", "w", encoding="utf-8")
+
+    archivo.write("=====================================\n")
+    archivo.write(" POLLOS EL BUCANERO S.A.\n")
+    archivo.write(" FACTURA DE VENTA\n")
+    archivo.write("=====================================\n\n")
+
+    archivo.write("Código: " + venta[0] + "\n")
+    archivo.write("Producto: " + venta[1] + "\n")
+    archivo.write("Cliente: " + venta[2] + "\n")
+    archivo.write("Cantidad: " + str(venta[3]) + "\n")
+    archivo.write("Precio: $" + str(venta[4]) + "\n")
+
+    archivo.close()
+
+
+# ==========================================
+# GENERAR ORDEN TXT
+# ==========================================
+
+def generar_orden_txt(orden):
+
+    archivo = open("Orden_Pedido.txt", "w", encoding="utf-8")
+
+    archivo.write("=====================================\n")
+    archivo.write(" POLLOS EL BUCANERO S.A.\n")
+    archivo.write(" ORDEN DE PEDIDO\n")
+    archivo.write("=====================================\n\n")
+
+    archivo.write("Número Orden: " + orden[0] + "\n")
+    archivo.write("Proveedor: " + orden[1] + "\n")
+    archivo.write("Producto: " + orden[2] + "\n")
+    archivo.write("Cantidad: " + str(orden[3]) + "\n")
+    archivo.write("Fecha: " + orden[4] + "\n")
+    archivo.write("Estado: " + orden[5] + "\n")
+
+    archivo.close()
+
+        # ==========================================
+# REGISTRAR ORDEN DE PEDIDO
+# ==========================================
+
+def registrar_orden(orden):
+
+    ordenes.append(orden)
+
+    print("Orden registrada correctamente.")
+
+
+# ==========================================
+# MOSTRAR ORDENES
+# ==========================================
+
+def mostrar_ordenes():
+
+    return ordenes
+
+
+# ==========================================
+# ACTUALIZAR ESTADO DE ORDEN
+# ==========================================
+
+def actualizar_estado(numero_orden, nuevo_estado):
+
+    for orden in ordenes:
+
+        if orden[0] == numero_orden:
+
+            orden[5] = nuevo_estado
+
+            return True
+
+    return False
+
+
+# ==========================================
+# GENERAR FACTURA TXT
+# ==========================================
+
+def generar_factura_txt(venta):
+
+    archivo = open("Factura.txt", "w", encoding="utf-8")
+
+    archivo.write("=====================================\n")
+    archivo.write("POLLOS EL BUCANERO S.A.\n")
+    archivo.write("FACTURA DE VENTA\n")
+    archivo.write("=====================================\n\n")
+
+    archivo.write("Código: " + str(venta[0]) + "\n")
+    archivo.write("Producto: " + str(venta[1]) + "\n")
+    archivo.write("Cliente: " + str(venta[2]) + "\n")
+    archivo.write("Cantidad: " + str(venta[3]) + "\n")
+    archivo.write("Precio: $" + str(venta[4]) + "\n")
+
+    archivo.close()
+
+
+# ==========================================
+# GENERAR ORDEN TXT
+# ==========================================
+
+def generar_orden_txt(orden):
+
+    archivo = open("Orden_Pedido.txt", "w", encoding="utf-8")
+
+    archivo.write("=====================================\n")
+    archivo.write("POLLOS EL BUCANERO S.A.\n")
+    archivo.write("ORDEN DE PEDIDO\n")
+    archivo.write("=====================================\n\n")
+
+    archivo.write("Número Orden: " + str(orden[0]) + "\n")
+    archivo.write("Proveedor: " + str(orden[1]) + "\n")
+    archivo.write("Producto: " + str(orden[2]) + "\n")
+    archivo.write("Cantidad: " + str(orden[3]) + "\n")
+    archivo.write("Fecha: " + str(orden[4]) + "\n")
+    archivo.write("Estado: " + str(orden[5]) + "\n")
+
+    archivo.close()
+
+
+# ==========================================
+# BUSCAR CLIENTE
+# ==========================================
+
+def buscar_cliente(documento):
+
+    for cliente in clientes:
+
+        if cliente[1] == documento:
+
+            return cliente
+
+    return None
+
+
+# ==========================================
+# BUSCAR PROVEEDOR
+# ==========================================
+
+def buscar_proveedor(documento):
+
+    for proveedor in proveedores:
+
+        if proveedor[1] == documento:
+
+            return proveedor
+
+    return None
+
+
+# ==========================================
+# ELIMINAR CLIENTE
+# ==========================================
+
+def eliminar_cliente(documento):
+
+    for cliente in clientes:
+
+        if cliente[1] == documento:
+
+            clientes.remove(cliente)
+
+            return True
+
+    return False
+
+
+# ==========================================
+# ELIMINAR PROVEEDOR
+# ==========================================
+
+def eliminar_proveedor(documento):
+
+    for proveedor in proveedores:
+
+        if proveedor[1] == documento:
+
+            proveedores.remove(proveedor)
+
+            return True
+
+    return False
+
+def generar_factura_txt(venta):
+
+    print("Generando factura...")
+    codigo = venta[0]
+    producto = venta[1]
+    cliente = venta[2]
+    cantidad = int(venta[3])
+    precio = float(venta[4])
+
+    subtotal = cantidad * precio
+    iva = subtotal * 0.19
+    total = subtotal + iva
+
+    nombre_archivo = os.path.join(
+    os.path.dirname(__file__),
+    f"factura_{codigo}.txt"
+)
+    print(nombre_archivo)
+    archivo = open(nombre_archivo, "w", encoding="utf-8")
+
+    archivo.write("=========================================\n")
+    archivo.write("        POLLOS EL BUCANERO S.A.\n")
+    archivo.write("        FACTURA DE VENTA\n")
+    archivo.write("=========================================\n\n")
+
+    archivo.write(f"Factura No.: {codigo}\n\n")
+
+    archivo.write("DATOS DEL CLIENTE\n")
+    archivo.write("-----------------------------------------\n")
+    archivo.write(f"Cliente: {cliente}\n\n")
+
+    archivo.write("DETALLE DE LA FACTURA\n")
+    archivo.write("-----------------------------------------\n")
+    archivo.write(f"Producto : {producto}\n")
+    archivo.write(f"Cantidad : {cantidad}\n")
+    archivo.write(f"Precio   : ${precio:,.0f}\n")
+    archivo.write(f"Subtotal : ${subtotal:,.0f}\n")
+    archivo.write(f"IVA (19%): ${iva:,.0f}\n")
+    archivo.write(f"TOTAL    : ${total:,.0f}\n\n")
+
+    archivo.write("Gracias por su compra.\n")
+    archivo.write("POLLOS EL BUCANERO S.A.\n")
+
+    archivo.close()

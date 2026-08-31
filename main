@@ -1,1 +1,6 @@
+# Sistema Integrado Pollo el Bucanero S.A
+# main: es el lugar donde se ejecuta el Programa.
 
+from gui import iniciar_gui
+
+iniciar_gui()
